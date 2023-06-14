@@ -41,6 +41,7 @@ class ViewController: UIViewController {
         
         playSoundFx(soundname: "selection")
         sender.isEnabled = false
+        UIView.transition(with: sender, duration: 0.5, options: .transitionFlipFromRight, animations: nil)
         
         switch sender {
             
@@ -172,14 +173,16 @@ class ViewController: UIViewController {
             
             view.isUserInteractionEnabled = false
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [self] in
                 
                 if game.guess1 == game.guess2 {
                     game.match(sender, game.firstButton!)
                     playSoundFx(soundname: "match")
+                    
                 } else {
-                    game.reset(sender, game.firstButton!)
+                    
                     playSoundFx(soundname: "reset")
+                    game.reset(sender, game.firstButton!)
                 }
                 view.isUserInteractionEnabled = true
             }

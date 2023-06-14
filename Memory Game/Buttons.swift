@@ -83,6 +83,9 @@ struct Buttons {
     
     mutating func reset(_ currentButton: UIButton, _ prevButton: UIButton) {
         
+        UIView.transition(with: currentButton, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
+        UIView.transition(with: prevButton, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
+        
         guess1 = ""
         guess2 = ""
         firstButton = nil
@@ -91,6 +94,7 @@ struct Buttons {
         prevButton.setImage(UIImage(named: "black"), for: .normal)
         currentButton.isEnabled = true
         prevButton.isEnabled = true
+        
     }
     
     mutating func startAgain(_ buttonArray: [UIButton]) {
