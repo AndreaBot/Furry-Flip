@@ -18,16 +18,7 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        game.setBlack(allButtons)
-        assignAnimal(allButtons)
-    }
-    
-    func assignAnimal(_ buttonArray: [CustomButton]) {
-        
-        for button in buttonArray {
-            let animal = game.generateRandomAnimal()
-            button.revealedAnimal = animal
-        }
+        game.startAgain(allButtons)
     }
 
     @IBAction func buttonPressed(_ sender: CustomButton) {

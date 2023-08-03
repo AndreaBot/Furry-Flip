@@ -30,15 +30,6 @@ struct GameLogic {
     var guess1 = ""
     var guess2 = ""
     var firstButton: UIButton?
-    
-    mutating func generateRandomAnimal() -> String {
-        
-        let random = allNames.randomElement()!
-        if let entry = allNames.firstIndex(where: {$0 == random}) {
-            allNames.remove(at: entry)
-        }
-        return random
-    }
 
     mutating func match(_ currentButton: UIButton, _ prevButton: UIButton) {
         
@@ -62,16 +53,34 @@ struct GameLogic {
 
         guess1 = ""
         guess2 = ""
-        //firstButton = nil
+        firstButton = nil
     }
     
     mutating func startAgain(_ buttonArray: [CustomButton]) {
+
+        setBlack(buttonArray)
         
-        allNames.append(contentsOf: originalArray)
+        if allNames.count == 0 {
+            allNames.append(contentsOf: originalArray)
+        }
+        
         for button in buttonArray {
             button.revealedAnimal = generateRandomAnimal()
-            setBlack(buttonArray)
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            for button in buttonArray {
+                UIView.transition(with: button, duration: 0.5, options: .transitionFlipFromRight, animations: nil)
+                button.setImage(UIImage(named: button.revealedAnimal), for: .normal)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            for button in buttonArray {
+                UIView.transition(with: button, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
+                button.setImage(UIImage(named: "black"), for: .normal)
+            }
+        }
+        
         guess1 = ""
         guess2 = ""
         firstButton = nil
@@ -80,9 +89,21 @@ struct GameLogic {
     func setBlack(_ buttonArray: [CustomButton]) {
         
         for button in buttonArray {
+            if button.alpha == 0 {
+                UIView.transition(with: button, duration: 0.5, options: .transitionCrossDissolve, animations: nil)
+            }
             button.isEnabled = true
             button.setImage(button.startImage, for: .normal)
             button.alpha = 1
         }
+    }
+    
+    mutating func generateRandomAnimal() -> String {
+        
+        let random = allNames.randomElement()!
+        if let entry = allNames.firstIndex(where: {$0 == random}) {
+            allNames.remove(at: entry)
+        }
+        return random
     }
 }
