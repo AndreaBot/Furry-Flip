@@ -12,6 +12,8 @@ class GameViewController: UIViewController {
     
     @IBOutlet var allButtons: [CustomButton]!
     @IBOutlet weak var timerBar: UIProgressView!
+    @IBOutlet weak var quitButton: UIButton!
+    @IBOutlet weak var newGameButton: UIButton!
     
     var game = GameLogic()
     var musicFx: AVAudioPlayer!
@@ -38,7 +40,6 @@ class GameViewController: UIViewController {
     }
 
     @IBAction func buttonPressed(_ sender: CustomButton) {
-        
         PlayerStats.stats["Buttons Tapped"]! += 1
         
         playSoundFx(soundname: "selection")
@@ -61,7 +62,7 @@ class GameViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [self] in
                 
                 if game.guess1 == game.guess2 {
-                    game.match(sender, game.firstButton!)
+                    game.match(sender, game.firstButton!, quitButton, newGameButton)
                     playSoundFx(soundname: "match")
                     
                 } else {
@@ -75,8 +76,7 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func startNewGame(_ sender: UIButton) {
-        
-        game.startAgain(self, allButtons, timerBar)
+        game.startAgain(self, allButtons, timerBar, quitButton, newGameButton)
     }
     
     func playSoundFx(soundname: String) {
@@ -86,14 +86,12 @@ class GameViewController: UIViewController {
     }
     
     func loadStats() {
-        
         if let playerStats = defaults.object(forKey: "playerStats") as? [String : Int] {
             PlayerStats.stats = playerStats
         }
     }
     
     @IBAction func quitPressed(_ sender: UIButton) {
-        game.timer.invalidate()
         dismiss(animated: true)
     }
     

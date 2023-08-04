@@ -19,7 +19,6 @@ class StatsViewController: UITableViewController {
         if let playerStats = defaults.object(forKey: "playerStats") as? [String : Int] {
             PlayerStats.stats = playerStats
             playerStatsArray = Array(playerStats.keys).sorted()
-                
         }
     }
     
@@ -27,20 +26,34 @@ class StatsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return playerStatsArray.count
+        if playerStatsArray == [] {
+            return 1
+        } else {
+            return playerStatsArray.count
+        }
     }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let stat = playerStatsArray[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! MyTableViewCell
-
-        cell.playerStat.text = stat
-        cell.count.text = String(PlayerStats.stats[stat]!)
-
-        return cell
+        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! MyTableViewCell
+            
+            if playerStatsArray == [] {
+                cell.playerStat.text = "👻 Oops! Nothing to see here, yet. Start playing to see your stats!"
+                cell.playerStat.numberOfLines = 2
+                cell.playerStat.adjustsFontSizeToFitWidth = true
+                cell.playerStat.textAlignment = .center
+                cell.count.isHidden = true
+            } else {
+            let stat = playerStatsArray[indexPath.row]
+            cell.playerStat.text = stat
+            cell.count.text = String(PlayerStats.stats[stat]!)
+            }
+            
+            return cell
+            
+        }
     }
-}
+
 
     
   

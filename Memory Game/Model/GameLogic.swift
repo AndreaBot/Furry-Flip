@@ -38,7 +38,7 @@ class GameLogic {
     var totalTime = 15
     var secondsPassed = 0
     
-    func match(_ currentButton: UIButton, _ prevButton: UIButton) {
+    func match(_ currentButton: UIButton, _ prevButton: UIButton, _ quitButton: UIButton, _ newGameButton: UIButton) {
         
         buttonsLeft -= 2
         guess1 = ""
@@ -50,6 +50,8 @@ class GameLogic {
         PlayerStats.stats["Correct Matches"]! += 1
 
         if buttonsLeft == 0 && secondsPassed < totalTime {
+            quitButton.isEnabled = true
+            newGameButton.isEnabled = true
             timer.invalidate()
             PlayerStats.stats["Games Won"]! += 1
             PlayerStats.stats["Total Games Played"]! += 1
@@ -73,10 +75,13 @@ class GameLogic {
         PlayerStats.stats["Errors"]! += 1
     }
     
-    func startAgain(_ VC: UIViewController, _ buttonArray: [CustomButton], _ progressBar: UIProgressView) {
+    func startAgain(_ VC: UIViewController, _ buttonArray: [CustomButton], _ progressBar: UIProgressView, _ quitButton: UIButton, _ newGameButton: UIButton) {
         
         VC.view.isUserInteractionEnabled = false
+        quitButton.isEnabled = false
+        newGameButton.isEnabled = false
         progressBar.progress = 0
+        
         setBlack(buttonArray)
         for button in buttonArray {
             button.isEnabled = true
@@ -102,7 +107,7 @@ class GameLogic {
                 button.setImage(UIImage(named: "black"), for: .normal)
             }
             VC.view.isUserInteractionEnabled = true
-            self.startTimer(buttonArray, progressBar)
+            self.startTimer(buttonArray, progressBar, quitButton, newGameButton)
         }
         buttonsLeft = 12
         guess1 = ""
@@ -131,7 +136,7 @@ class GameLogic {
         return random
     }
     
-    func startTimer(_ buttonArray: [CustomButton], _ progressBar: UIProgressView) {
+    func startTimer(_ buttonArray: [CustomButton], _ progressBar: UIProgressView, _ quitButton: UIButton, _ newGameButton: UIButton) {
         
         self.secondsPassed = 0
         progressBar.progress = 1
@@ -151,6 +156,8 @@ class GameLogic {
                     }
                 timer.invalidate()
                 if self.buttonsLeft > 0 {
+                    quitButton.isEnabled = true
+                    newGameButton.isEnabled = true
                     PlayerStats.stats["Games Lost"]! += 1
                     PlayerStats.stats["Total Games Played"]! += 1
                     self.defaults.set(PlayerStats.stats, forKey: "playerStats")

@@ -9,39 +9,75 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="gwh-EX-vn0">
             <objects>
-                <viewController id="Tv3-lz-BbV" sceneMemberID="viewController">
+                <viewController id="Tv3-lz-BbV" customClass="HomeViewController" customModule="Furry_Flip" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZXD-K0-puZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jIp-uO-fUt">
-                                <rect key="frame" x="159" y="613" width="75" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="PLAY"/>
-                                <connections>
-                                    <segue destination="BYZ-38-t0r" kind="presentation" modalPresentationStyle="fullScreen" id="Jlg-dF-GoG"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BW0-Ga-RHe">
-                                <rect key="frame" x="121" y="682" width="150" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="MY STATS"/>
-                                <connections>
-                                    <segue destination="20P-n6-59x" kind="show" id="AXn-Rs-s9D"/>
-                                </connections>
-                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Furry Flip Background" translatesAutoresizingMaskIntoConstraints="NO" id="vTW-hK-2vN" userLabel="Background Image">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="rig-J8-70H" userLabel="Main Stack View">
+                                <rect key="frame" x="15" y="269" width="363" height="339"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Furry Flip Text" translatesAutoresizingMaskIntoConstraints="NO" id="htA-eP-B3C">
+                                        <rect key="frame" x="0.0" y="0.0" width="363" height="154.66666666666666"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ur6-4c-tBn" userLabel="Buttons Stack View">
+                                        <rect key="frame" x="0.0" y="184.66666666666669" width="363" height="154.33333333333331"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jIp-uO-fUt">
+                                                <rect key="frame" x="0.0" y="0.0" width="363" height="67"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="PLAY">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <segue destination="BYZ-38-t0r" kind="presentation" modalPresentationStyle="fullScreen" id="Jlg-dF-GoG"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BW0-Ga-RHe">
+                                                <rect key="frame" x="0.0" y="86.999999999999943" width="363" height="67.333333333333314"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="MY STATS">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <segue destination="20P-n6-59x" kind="show" id="AXn-Rs-s9D"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xwr-Rg-4sj"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Xwr-Rg-4sj" firstAttribute="trailing" secondItem="vTW-hK-2vN" secondAttribute="trailing" id="3Ee-U2-rta"/>
+                            <constraint firstItem="rig-J8-70H" firstAttribute="leading" secondItem="Xwr-Rg-4sj" secondAttribute="leading" constant="15" id="G7v-la-NTI"/>
+                            <constraint firstItem="vTW-hK-2vN" firstAttribute="bottom" secondItem="ZXD-K0-puZ" secondAttribute="bottom" id="Ino-NP-Zd8"/>
+                            <constraint firstItem="rig-J8-70H" firstAttribute="top" secondItem="Xwr-Rg-4sj" secondAttribute="top" constant="210" id="RFZ-jR-Tro"/>
+                            <constraint firstItem="vTW-hK-2vN" firstAttribute="top" secondItem="ZXD-K0-puZ" secondAttribute="top" id="RHB-6F-5Q2"/>
+                            <constraint firstItem="Xwr-Rg-4sj" firstAttribute="bottom" secondItem="rig-J8-70H" secondAttribute="bottom" constant="210" id="ahl-qN-bbw"/>
+                            <constraint firstItem="vTW-hK-2vN" firstAttribute="leading" secondItem="Xwr-Rg-4sj" secondAttribute="leading" id="awX-0j-Gz1"/>
+                            <constraint firstAttribute="trailing" secondItem="rig-J8-70H" secondAttribute="trailing" constant="15" id="qvz-Cy-mXE"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gkL-sA-mBW"/>
+                    <connections>
+                        <outletCollection property="buttons" destination="jIp-uO-fUt" collectionClass="NSMutableArray" id="sgh-Vd-Fgp"/>
+                        <outletCollection property="buttons" destination="BW0-Ga-RHe" collectionClass="NSMutableArray" id="QXe-zn-RyJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="31G-qY-iir" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -255,6 +291,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="newGameButton" destination="66s-0P-Ol2" id="cJf-Ur-jb7"/>
+                        <outlet property="quitButton" destination="cAX-gU-Iyv" id="Jib-9O-3O2"/>
                         <outlet property="timerBar" destination="ac3-PA-36M" id="fVg-rW-adF"/>
                         <outletCollection property="allButtons" destination="Lw6-7r-GCO" collectionClass="NSMutableArray" id="XKO-kJ-fkW"/>
                         <outletCollection property="allButtons" destination="gkG-VF-6jL" collectionClass="NSMutableArray" id="OOK-mu-XtD"/>
@@ -276,6 +314,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Furry Flip Background" width="810" height="1440"/>
+        <image name="Furry Flip Text" width="1200" height="260"/>
         <image name="black" width="333.33334350585938" height="333.33334350585938"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
