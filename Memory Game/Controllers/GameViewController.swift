@@ -15,10 +15,14 @@ class GameViewController: UIViewController {
     
     var game = GameLogic()
     var musicFx: AVAudioPlayer!
-    
+    let defaults = UserDefaults.standard
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadStats()
+        
         timerBar.progress = 0
         timerBar.transform = timerBar.transform.scaledBy(x: 1, y: 2)
         
@@ -34,6 +38,8 @@ class GameViewController: UIViewController {
     }
 
     @IBAction func buttonPressed(_ sender: CustomButton) {
+        
+        PlayerStats.stats["Buttons Tapped"]! += 1
         
         playSoundFx(soundname: "selection")
         sender.isEnabled = false
@@ -78,4 +84,17 @@ class GameViewController: UIViewController {
         musicFx = try! AVAudioPlayer(contentsOf: url!)
         musicFx.play()
     }
+    
+    func loadStats() {
+        
+        if let playerStats = defaults.object(forKey: "playerStats") as? [String : Int] {
+            PlayerStats.stats = playerStats
+        }
+    }
+    
+    @IBAction func quitPressed(_ sender: UIButton) {
+        game.timer.invalidate()
+        dismiss(animated: true)
+    }
+    
 }
