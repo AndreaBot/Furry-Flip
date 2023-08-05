@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol GameLogicDelegate {
+    func endGameWon()
+    func endGameLost()
+}
+
 class GameLogic {
     
     let defaults = UserDefaults.standard
+    var delegate: GameLogicDelegate?
     
     var originalArray = [
         "bird", "bird",
@@ -35,10 +41,11 @@ class GameLogic {
     var firstButton: UIButton?
     
     var timer = Timer()
-    var totalTime = 15
-    var secondsPassed = 0
+    var totalTime = 15.0
+    var timePassed = 0.0
     
-    func match(_ currentButton: UIButton, _ prevButton: UIButton, _ quitButton: UIButton, _ newGameButton: UIButton) {
+    
+    func match(_ currentButton: UIButton, _ prevButton: UIButton, _ quitButton: UIBarButtonItem, _ newGameButton: UIButton) {
         
         buttonsLeft -= 2
         guess1 = ""
@@ -47,15 +54,17 @@ class GameLogic {
         
         currentButton.alpha = 0
         prevButton.alpha = 0
-        PlayerStats.stats["Correct Matches"]! += 1
-
-        if buttonsLeft == 0 && secondsPassed < totalTime {
+        PlayerStats.overallStats["Correct Matches"]! += 1
+        PlayerStats.currentGameStats["Correct Matches"]! += 1
+        
+        if buttonsLeft == 0 && timePassed < totalTime {
             quitButton.isEnabled = true
             newGameButton.isEnabled = true
             timer.invalidate()
-            PlayerStats.stats["Games Won"]! += 1
-            PlayerStats.stats["Total Games Played"]! += 1
-            defaults.set(PlayerStats.stats, forKey: "playerStats")
+            PlayerStats.overallStats["Games Won"]! += 1
+            PlayerStats.overallStats["Total Games Played"]! += 1
+            defaults.set(PlayerStats.overallStats, forKey: "playerStats")
+            delegate?.endGameWon()
         }
     }
     
@@ -72,14 +81,16 @@ class GameLogic {
         guess1 = ""
         guess2 = ""
         firstButton = nil
-        PlayerStats.stats["Errors"]! += 1
+        PlayerStats.overallStats["Errors"]! += 1
+        PlayerStats.currentGameStats["Errors"]! += 1
     }
     
-    func startAgain(_ VC: UIViewController, _ buttonArray: [CustomButton], _ progressBar: UIProgressView, _ quitButton: UIButton, _ newGameButton: UIButton) {
+    func startAgain(_ VC: UIViewController, _ buttonArray: [CustomButton], _ progressBar: UIProgressView, _ quitButton: UIBarButtonItem, _ newGameButton: UIButton) {
         
         VC.view.isUserInteractionEnabled = false
         quitButton.isEnabled = false
         newGameButton.isEnabled = false
+        newGameButton.alpha = 0.4
         progressBar.progress = 0
         
         setBlack(buttonArray)
@@ -113,6 +124,9 @@ class GameLogic {
         guess1 = ""
         guess2 = ""
         firstButton = nil
+        PlayerStats.currentGameStats["Cards Flipped"]! = 0
+        PlayerStats.currentGameStats["Correct Matches"]! = 0
+        PlayerStats.currentGameStats["Errors"]! = 0
     }
     
     func setBlack(_ buttonArray: [CustomButton]) {
@@ -136,31 +150,43 @@ class GameLogic {
         return random
     }
     
-    func startTimer(_ buttonArray: [CustomButton], _ progressBar: UIProgressView, _ quitButton: UIButton, _ newGameButton: UIButton) {
+    func startTimer(_ buttonArray: [CustomButton], _ progressBar: UIProgressView, _ quitButton: UIBarButtonItem, _ newGameButton: UIButton) {
         
-        self.secondsPassed = 0
+        self.timePassed = 0.0
         progressBar.progress = 1
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+        progressBar.progressTintColor = .systemGreen
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 0.02, repeats: true) { [self] timer in
             
-            if self.secondsPassed < self.totalTime {
-                self.secondsPassed += 1
-                let percentageProgress = Float(self.secondsPassed) / Float(self.totalTime)
+            if timePassed < totalTime {
+                timePassed += 0.02
+                let percentageProgress = Float(timePassed) / Float(totalTime)
                 progressBar.progress = 1 - percentageProgress
+                
+                if (0.34...0.56).contains(progressBar.progress) {
+                    progressBar.progressTintColor = .systemYellow
+                } else if (0.20...0.38).contains(progressBar.progress) {
+                    progressBar.progressTintColor = .systemOrange
+                } else if (0.00...0.14).contains(progressBar.progress) {
+                    progressBar.progressTintColor = .systemRed
+                }
                 
             } else {
                 
                 for button in buttonArray {
-                        UIView.transition(with: button, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                            button.alpha = 0
-                        }, completion: nil)
-                    }
+                    UIView.transition(with: button, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                        button.alpha = 0
+                    }, completion: nil)
+                }
                 timer.invalidate()
-                if self.buttonsLeft > 0 {
+                if buttonsLeft > 0 {
                     quitButton.isEnabled = true
                     newGameButton.isEnabled = true
-                    PlayerStats.stats["Games Lost"]! += 1
-                    PlayerStats.stats["Total Games Played"]! += 1
-                    self.defaults.set(PlayerStats.stats, forKey: "playerStats")
+                    newGameButton.alpha = 1
+                    PlayerStats.overallStats["Games Lost"]! += 1
+                    PlayerStats.overallStats["Total Games Played"]! += 1
+                    defaults.set(PlayerStats.overallStats, forKey: "playerStats")
+                    delegate?.endGameLost()
                 }
             }
         }

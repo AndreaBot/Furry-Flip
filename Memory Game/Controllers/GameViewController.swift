@@ -12,7 +12,7 @@ class GameViewController: UIViewController {
     
     @IBOutlet var allButtons: [CustomButton]!
     @IBOutlet weak var timerBar: UIProgressView!
-    @IBOutlet weak var quitButton: UIButton!
+    @IBOutlet weak var quitButton: UIBarButtonItem!
     @IBOutlet weak var newGameButton: UIButton!
     
     var game = GameLogic()
@@ -22,9 +22,10 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        game.delegate = self
+        title = "Furry Flip"
         loadStats()
-        
+        navigationItem.hidesBackButton = true
         timerBar.progress = 0
         timerBar.transform = timerBar.transform.scaledBy(x: 1, y: 2)
         
@@ -40,7 +41,8 @@ class GameViewController: UIViewController {
     }
 
     @IBAction func buttonPressed(_ sender: CustomButton) {
-        PlayerStats.stats["Buttons Tapped"]! += 1
+        PlayerStats.overallStats["Cards Flipped"]! += 1
+        PlayerStats.currentGameStats["Cards Flipped"]! += 1
         
         playSoundFx(soundname: "selection")
         sender.isEnabled = false
@@ -87,12 +89,38 @@ class GameViewController: UIViewController {
     
     func loadStats() {
         if let playerStats = defaults.object(forKey: "playerStats") as? [String : Int] {
-            PlayerStats.stats = playerStats
+            PlayerStats.overallStats = playerStats
         }
     }
     
-    @IBAction func quitPressed(_ sender: UIButton) {
-        dismiss(animated: true)
+    @IBAction func quitPressed(_ sender: UIBarButtonItem) {
+        navigationController?.popToRootViewController(animated: true)
+    }
+}
+
+//MARK: - GameLogicDelegate
+
+extension GameViewController: GameLogicDelegate {
+    
+    func endGameWon() {
+
+        let title = "🎉 VICTORY! 🎉"
+        let message = "\nWell done! \n\nCard flipped: \(String(describing: PlayerStats.currentGameStats["Cards Flipped"]!)) \nCorrect matches: \(String(describing: PlayerStats.currentGameStats["Correct Matches"]!)) \nErrors: \(String(describing: PlayerStats.currentGameStats["Errors"]!))"
+        showMessage(title, message)
     }
     
+    func endGameLost() {
+        
+        let title = "You lost... ☹️"
+        let message = "\nTry again! \n\nCard flipped: \(String(describing: PlayerStats.currentGameStats["Cards Flipped"]!)) \nCorrect matches: \(String(describing: PlayerStats.currentGameStats["Correct Matches"]!)) \nErrors: \(String(describing: PlayerStats.currentGameStats["Errors"]!))"
+        showMessage(title, message)
+    }
+
+    func showMessage(_ title: String, _ message: String) {
+    
+        let window = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        window.addAction(UIAlertAction(title: "Continue", style: .default))
+        present(window, animated: true)
+        
+    }
 }

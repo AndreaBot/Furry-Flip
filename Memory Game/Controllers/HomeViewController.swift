@@ -20,9 +20,6 @@ class HomeViewController: UIViewController {
             button.layer.borderColor = CGColor(gray: 0, alpha: 1)
             button.layer.borderWidth = 4
             button.backgroundColor = .white
-            
         }
-        
     }
-
 }

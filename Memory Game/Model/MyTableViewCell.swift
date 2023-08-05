@@ -15,6 +15,5 @@ class MyTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
 }
