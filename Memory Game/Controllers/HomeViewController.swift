@@ -21,5 +21,6 @@ class HomeViewController: UIViewController {
             button.layer.borderWidth = 4
             button.backgroundColor = .white
         }
+        
     }
 }

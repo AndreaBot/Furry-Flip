@@ -81,7 +81,7 @@ class GameViewController: UIViewController {
         game.startAgain(self, allButtons, timerBar, quitButton, newGameButton)
     }
     
-    func playSoundFx(soundname: String) {
+    public func playSoundFx(soundname: String) {
         let url = Bundle.main.url(forResource: soundname, withExtension: "wav")
         musicFx = try! AVAudioPlayer(contentsOf: url!)
         musicFx.play()
